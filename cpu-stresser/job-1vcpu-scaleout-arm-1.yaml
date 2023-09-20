@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cpu-stresser-compute-class-1vcpu-scaleout-arm-1
+spec:
+  template:
+    spec:
+      nodeSelector:
+        cloud.google.com/compute-class: "Scale-Out"
+        kubernetes.io/arch: arm64
+      containers:
+      - name: cpu-stresser
+        image: us-central1-docker.pkg.dev/cicd-system-demo-01/cicd-demo-01/cpu-stresser-arm@sha256:e8438d1d126b959f1891b6088256eb37bf1e67cdb423ba2de67d3a5ef8570c91
+        command: ["python",  "app.py"]
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "1000m"
+      restartPolicy: Never
+  backoffLimit: 4

@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cpu-stresser-compute-class-1vcpu-balanced-2
+spec:
+  template:
+    spec:
+      nodeSelector:
+        cloud.google.com/compute-class: "Balanced"
+      containers:
+      - name: cpu-stresser
+        image: us-central1-docker.pkg.dev/cicd-system-demo-01/cicd-demo-01/cpu-stresser@sha256:823120a5ca095669a67b06d6daf0fb2fa94d218cded8f79174048c25ac797e55
+        command: ["python",  "app.py"]
+        resources:
+          requests:
+            memory: "4Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "1000m"
+      restartPolicy: Never
+  backoffLimit: 4
